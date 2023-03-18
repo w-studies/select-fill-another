@@ -24,6 +24,10 @@
     select {
       padding: 4px;
     }
+
+    div.error {
+      color: red;
+    }
   </style>
 </head>
 
@@ -34,6 +38,7 @@
   <div>
     <label>Cidadão</label>
     <select name="cidadao">
+      <option value="">[ Selecione um Cidadão ]</option>
       <option value="6415b1d4d1e29">Ashtyn Parrish</option>
       <option value="6415b1d4d1e31">Richard Conrad</option>
       <option value="6415b1d4d1e32">Adam Bray</option>
@@ -47,6 +52,7 @@
       <option value="6415b1d4d1e3a">Kirsten Frye</option>
       <option value="6415b1d4d1e3b">Invalid User</option>
     </select>
+    <div class="error"></div>
   </div>
 
   <div>
@@ -80,6 +86,8 @@
           const element = document.querySelector(`input[name="${i}"]`)
           if (element) element.value = body.data[i]
         }
+      } else if (body.type === 'error') {
+        document.querySelector('div.error').innerHTML = body.data.cidadao
       }
     }
   </script>
