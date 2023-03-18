@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select fill another field</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    label {
+      display: block
+    }
+
+    h3 {
+      font-weight: normal;
+    }
+
+    div,
+    input,
+    select {
+      padding: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>
+    Select fill another field
+  </h3>
+  <div>
+    <label>Cidadão</label>
+    <select name="cidadao">
+      <option value="6415b1d4d1e29">Ashtyn Parrish</option>
+      <option value="6415b1d4d1e31">Richard Conrad</option>
+      <option value="6415b1d4d1e32">Adam Bray</option>
+      <option value="6415b1d4d1e33">Sadie Lambert</option>
+      <option value="6415b1d4d1e34">Kadence Walker</option>
+      <option value="6415b1d4d1e35">Frederick Tate</option>
+      <option value="6415b1d4d1e36">Janiyah Montgomery</option>
+      <option value="6415b1d4d1e37">Olive Rivera</option>
+      <option value="6415b1d4d1e38">Bryson Riley</option>
+      <option value="6415b1d4d1e39">Mya Wilkinson</option>
+      <option value="6415b1d4d1e3a">Kirsten Frye</option>
+      <option value="6415b1d4d1e3b">Invalid User</option>
+    </select>
+  </div>
+
+  <div>
+    <label>CPF</label>
+    <input type="text" name='cpf'>
+  </div>
+
+  <div>
+    <label>UF</label>
+    <input type="text" name='uf'>
+  </div>
+
+  <div>
+    <label>ID</label>
+    <input type="text" name='id'>
+  </div>
+
+  <script>
+    document.querySelector('select[name="cidadao"]').onchange = async ({ target }) => {
+      const response = await fetch('api/', {
+        method: 'post',
+        body: JSON.stringify({ id: target.value }), headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      // converte o corpo da response em json
+      const body = await response.json()
+
+      if (body.type === 'success') {
+        for (i in body.data) {
+          const element = document.querySelector(`input[name="${i}"]`)
+          if (element) element.value = body.data[i]
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
