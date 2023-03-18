@@ -52,7 +52,7 @@
       <option value="6415b1d4d1e3a">Kirsten Frye</option>
       <option value="6415b1d4d1e3b">Invalid User</option>
     </select>
-    <div class="error"></div>
+    <div class="error cidadao"></div>
   </div>
 
   <div>
@@ -72,6 +72,15 @@
 
   <script>
     document.querySelector('select[name="cidadao"]').onchange = async ({ target }) => {
+      // clear inputs
+      for (input of document.querySelectorAll('input')) {
+        input.value = '';
+      }
+      // clear errors
+      for (div of document.querySelectorAll('div.error')) {
+        div.innerHTML = '';
+      }
+      // ajax request
       const response = await fetch('api/', {
         method: 'post',
         body: JSON.stringify({ id: target.value }), headers: {
@@ -81,13 +90,18 @@
       // converte o corpo da response em json
       const body = await response.json()
 
+      // se a resposta for sucesso
       if (body.type === 'success') {
         for (i in body.data) {
           const element = document.querySelector(`input[name="${i}"]`)
           if (element) element.value = body.data[i]
         }
+        // se a resposta tiver erro
       } else if (body.type === 'error') {
-        document.querySelector('div.error').innerHTML = body.data.cidadao
+        for (i in body.data) {
+          const element = document.querySelector(`div.error.${i}`)
+          if (element) element.innerHTML = body.data[i]
+        }
       }
     }
   </script>
